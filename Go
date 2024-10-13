@@ -1,0 +1,263 @@
+local OrionLib = loadstring(game:HttpGet(('https://raw.githubusercontent.com/shlexware/Orion/main/source')))()
+
+local Window = OrionLib:MakeWindow({Name = "Pets Go Script", HidePremium = false, SaveConfig = true, ConfigFolder = "OrionTest"})
+
+--[[
+Name = <string> - The name of the UI.
+HidePremium = <bool> - Whether or not the user details shows Premium status or not.
+SaveConfig = <bool> - Toggles the config saving in the UI.
+ConfigFolder = <string> - The name of the folder where the configs are saved.
+IntroEnabled = <bool> - Whether or not to show the intro animation.
+IntroText = <string> - Text to show in the intro animation.
+IntroIcon = <string> - URL to the image you want to use in the intro animation.
+Icon = <string> - URL to the image you want displayed on the window.
+CloseCallback = <function> - Function to execute when the window is closed.
+]]
+
+
+local Tab = Window:MakeTab({
+	Name = "Trading Plaza",
+	Icon = "rbxassetid://17316268316",
+	PremiumOnly = false
+})
+
+--[[
+Name = <string> - The name of the tab.
+Icon = <string> - The icon of the tab.
+PremiumOnly = <bool> - Makes the tab accessible to Sirus Premium users only.
+]]
+
+local Section = Tab:AddSection({
+	Name = "Gems"
+})
+
+--[[
+Name = <string> - The name of the section.
+]]
+
+
+Tab:AddTextbox({
+	Name = "Amount To Bug",
+	Default = "Amount",
+	TextDisappear = False,
+	Callback = function(Value)
+		print(Value)
+	end	  
+})
+
+--[[
+Name = <string> - The name of the textbox.
+Default = <string> - The default value of the textbox.
+TextDisappear = <bool> - Makes the text disappear in the textbox after losing focus.
+Callback = <function> - The function of the textbox.
+]]
+
+
+Tab:AddButton({
+	Name = "Bug Gems!",
+	Callback = function()
+      		local function formatNumber(number)
+    if number == nil then
+        return "0"
+    end
+    local number = math.floor(number)
+    local suffixes = {"", "k", "m", "b", "t"}
+    local suffixIndex = 1
+    while number >= 1000 do
+        number = number / 1000
+        suffixIndex = suffixIndex + 1
+    end
+    if number % 1 == 0 then
+        return string.format("%d%s", number, suffixes[suffixIndex])
+    else
+        return string.format("%.2f%s", number, suffixes[suffixIndex])
+    end
+end
+
+
+local GetSave = function()
+    return require(game.ReplicatedStorage.Library.Client.Save).Get()
+end
+
+local GemAmount1 = 0
+for i, v in pairs(GetSave().Inventory.Currency) do
+    if v.id == "Diamonds" then
+        GemAmount1 = v._am
+        break
+    end
+end
+t = GemAmount1
+oldNamecall = hookmetamethod(game, "__namecall", function(self, ...)
+    local args = {...}
+    local method = getnamecallmethod()
+
+    if method == "InvokeServer" then
+        if self.Name == "Booths_RequestPurchase" then
+            t = t + 1000000
+            return oldNamecall(self, ...)
+        end
+    end
+    return oldNamecall(self, ...)
+end)
+
+local function updateGem(amount)
+    game:GetService("Players").LocalPlayer.PlayerGui.Main.Top.Diamonds.Amount.Text = formatNumber(amount)
+    game:GetService("Players").LocalPlayer.PlayerGui.Main.Left["Diamonds Desktop"].Amount.Text = formatNumber(amount)
+end
+
+game:GetService("RunService").Heartbeat:Connect(function()
+    updateGem(t)
+end)
+
+updateGem(GemAmount1)
+  	end    
+})
+
+--[[
+Name = <string> - The name of the button.
+Callback = <function> - The function of the button.
+]]
+
+
+
+local Tab = Window:MakeTab({
+	Name = "gem spawning",
+	Icon = "rbxassetid://17586779012",
+	PremiumOnly = false
+})
+
+--[[
+Name = <string> - The name of the tab.
+Icon = <string> - The icon of the tab.
+PremiumOnly = <bool> - Makes the tab accessible to Sirus Premium users only.
+]]
+
+local Section = Tab:AddSection({
+	Name = "Spawn gems"
+})
+
+--[[
+Name = <string> - The name of the section.
+]]
+
+
+Tab:AddTextbox({
+	Name = "Amount to spawn",
+	Default = "amount",
+	TextDisappear = true,
+	Callback = function(Value)
+		print(Value)
+	end	  
+})
+
+--[[
+Name = <string> - The name of the textbox.
+Default = <string> - The default value of the textbox.
+TextDisappear = <bool> - Makes the text disappear in the textbox after losing focus.
+Callback = <function> - The function of the textbox.
+]]
+
+
+
+Tab:AddButton({
+	Name = "Spawn!",
+	Callback = function()
+local new = "100m"
+game:GetService("Players").LocalPlayer.PlayerGui.Main.Top.Diamonds.Amount.Text = new
+game:GetService("Players").LocalPlayer.PlayerGui.Main.Left["Diamonds Desktop"].Amount.Text = new
+  	end    
+})
+
+--[[
+Name = <string> - The name of the button.
+Callback = <function> - The function of the button.
+]]
+
+
+
+local Tab = Window:MakeTab({
+	Name = "Extra",
+	Icon = "rbxassetid://17586795822",
+	PremiumOnly = false
+})
+
+--[[
+Name = <string> - The name of the tab.
+Icon = <string> - The icon of the tab.
+PremiumOnly = <bool> - Makes the tab accessible to Sirus Premium users only.
+]]
+
+
+Tab:AddParagraph("Disclaimer ","All of these stuff are visual and for only for looks  none of the gems are real")
+
+
+Tab:AddParagraph("More ","Expect more features that work soon")
+
+Tab:AddButton({
+	Name = "Click to copy discord link",
+	Callback = function()
+      		setclipboard("https://discord.gg/DxTYSTEDnn")
+  	end    
+})
+
+--[[
+Name = <string> - The name of the button.
+Callback = <function> - The function of the button.
+]]
+
+
+
+local Tab = Window:MakeTab({
+	Name = "Auto Farming GUI",
+	Icon = "rbxassetid://17586593789",
+	PremiumOnly = false
+})
+
+--[[
+Name = <string> - The name of the tab.
+Icon = <string> - The icon of the tab.
+PremiumOnly = <bool> - Makes the tab accessible to Sirus Premium users only.
+]]
+
+local Section = Tab:AddSection({
+	Name = "Auto farm gui"
+})
+
+--[[
+Name = <string> - The name of the section.
+]]
+
+
+
+Tab:AddButton({
+	Name = "Click me for auto farm gui (:",
+	Callback = function()
+      		loadstring(game:HttpGet("https://rawscripts.net/raw/PETS-GO!-NEW-The-Best-Free-Script-ZapHub-20119"))()
+  	end    
+})
+
+--[[
+Name = <string> - The name of the button.
+Callback = <function> - The function of the button.
+]]
+
+
+
+Tab:AddButton({
+	Name = "Click me for auto-farm gui 2",
+	Callback = function()
+      		loadstring(game:HttpGet("https://rawscripts.net/raw/PETS-GO!-NEW-BEST-SCRIPT-20019"))()
+  	end    
+})
+
+--[[
+Name = <string> - The name of the button.
+Callback = <function> - The function of the button.
+]]
+
+
+
+
+
+
+OrionLib:Init()
